@@ -31,7 +31,6 @@ public class PlayManager : MonoBehaviour
         {
             for(int h  = 0; h < height; h++)
             {
-                
                 GameObject cube = Instantiate(Cube, Cubes);
                 cube.transform.position += new Vector3(w * Interval, h * Interval, 0);
                 blocklist[w, h] = cube.GetComponent<Block>();

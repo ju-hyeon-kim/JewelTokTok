@@ -365,7 +365,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Cubes: {fileID: 616149207}
-  Cube: {fileID: 7714767261388589658, guid: 653c78d7ae555ab4288d49b0ad8f0589, type: 3}
+  Cube: {fileID: 526306092599925362, guid: 653c78d7ae555ab4288d49b0ad8f0589, type: 3}
+  characters:
+  - {fileID: -355967709, guid: 685cece1c543efd498e9ba833a7ba7cb, type: 3}
+  - {fileID: -1041136856, guid: 685cece1c543efd498e9ba833a7ba7cb, type: 3}
+  - {fileID: 1425657404, guid: 685cece1c543efd498e9ba833a7ba7cb, type: 3}
+  - {fileID: -334758467, guid: 685cece1c543efd498e9ba833a7ba7cb, type: 3}
+  - {fileID: -1943133709, guid: dc4a008785147af49bac52c7c9c104ed, type: 3}
+  width: 8
+  height: 8
 --- !u!4 &916643840
 Transform:
   m_ObjectHideFlags: 0
