@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//ÁÖÇö
 public class TitleScreen : MonoBehaviour
 {
     public GameObject MakeNicknameWindow;
