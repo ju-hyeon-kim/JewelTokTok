@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// (박영준) 플레이시작시 board 생성 및 조정.
 public class PlayManager : MonoBehaviour
 {
     // 필요 컴퍼넌트
@@ -13,8 +14,14 @@ public class PlayManager : MonoBehaviour
     [SerializeField] int width = 8;
     [SerializeField] int height = 8;
 
+    public static PlayManager inst = null;
+
+    public bool IsShifting { get; set; }
+
     void Start()
     {
+        inst = GetComponent<PlayManager>();
+
         MakeBoard();
     }
 
@@ -24,8 +31,8 @@ public class PlayManager : MonoBehaviour
         //간격
         float Interval = 0.625f;
 
-        Sprite[] previousLeft = new Sprite[height]; // 첫줄은 null, 두번째 height 줄부터 체크
-        Sprite previousBelow = null; // 직전 block
+        Sprite[] previousLeft = new Sprite[height]; // 직전 line block ( 바로 왼쪽 블락 )
+        Sprite previousBelow = null; // 직전 block ( 바로 밑의 블락 )
 
         for (int w = 0; w < width; w++)
         {
@@ -37,8 +44,8 @@ public class PlayManager : MonoBehaviour
 
                 List<Sprite> possibleCharacters = new List<Sprite>();
                 possibleCharacters.AddRange(characters);
-                possibleCharacters.Remove(previousLeft[h]);
-                possibleCharacters.Remove(previousBelow);
+                possibleCharacters.Remove(previousLeft[h]); // 첫 줄은 null, 두 번째 줄부터 check
+                possibleCharacters.Remove(previousBelow); // 직전 block 확인.
 
                 // 랜덤 sprite 입히기
                 Sprite newSprite = possibleCharacters[Random.Range(0, possibleCharacters.Count)];
