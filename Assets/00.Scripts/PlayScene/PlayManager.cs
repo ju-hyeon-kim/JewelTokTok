@@ -24,8 +24,8 @@ public class PlayManager : MonoBehaviour
         //간격
         float Interval = 0.625f;
 
-        Sprite[] previousLeft = new Sprite[height];
-        Sprite previousBelow = null;
+        Sprite[] previousLeft = new Sprite[height]; // 첫줄은 null, 두번째 height 줄부터 체크
+        Sprite previousBelow = null; // 직전 block
 
         for (int w = 0; w < width; w++)
         {
