@@ -6,8 +6,8 @@ using UnityEngine;
 public class PlayManager : MonoBehaviour
 {
     // 필요 컴퍼넌트
-    public Transform Cubes; // block 오브젝트 모아둘 부모 트랜스폼.
-    public GameObject Cube; // block 프리팹.
+    public GameObject cube; // block 프리팹.
+    private GameObject[,] cubes;
     Block[,] blocklist = null; // 모든 block들 list
     public List<Sprite> characters = new List<Sprite>();
     // 보드 크기 가로x세로 (8x8)
@@ -21,15 +21,15 @@ public class PlayManager : MonoBehaviour
     void Start()
     {
         inst = GetComponent<PlayManager>();
-
-        MakeBoard();
+        MakeBoard(0.625f, 0.625f);
     }
 
-    void MakeBoard() // 보드 만들기 -> 예외 처리: 처음 만들어진 보드판에는 '빙고!'가 있어서는 안됨
+    void MakeBoard(float _xOffset, float _yOffset) // 보드 만들기 -> 예외 처리: 처음 만들어진 보드판에는 '빙고!'가 있어서는 안됨
     {
-        blocklist = new Block[width, height];
+        cubes = new GameObject[width, height];
         //간격
-        float Interval = 0.625f;
+        float startX = transform.position.x;
+        float startY = transform.position.y;
 
         Sprite[] previousLeft = new Sprite[height]; // 직전 line block ( 바로 왼쪽 블락 )
         Sprite previousBelow = null; // 직전 block ( 바로 밑의 블락 )
@@ -38,9 +38,9 @@ public class PlayManager : MonoBehaviour
         {
             for(int h  = 0; h < height; h++)
             {
-                GameObject cube = Instantiate(Cube, Cubes);
-                cube.transform.position += new Vector3(w * Interval, h * Interval, 0);
-                blocklist[w, h] = cube.GetComponent<Block>();
+                GameObject newCube = Instantiate(cube, new Vector3(startX + ((_xOffset) * w), startY + ((_yOffset) * h), 0), cube.transform.rotation);
+                cubes[w, h] = newCube;
+                newCube.transform.parent = this.transform;
 
                 List<Sprite> possibleCharacters = new List<Sprite>();
                 possibleCharacters.AddRange(characters);
