@@ -9,6 +9,7 @@ public class Tile : MonoBehaviour
     private static Tile previousTile = null;
 
     SpriteRenderer render;
+    Collider2D myColider;
     bool isSelect = false;
 
     private Vector2[] adjacentDir = new Vector2[] { Vector2.up, Vector2.down, Vector2.left, Vector2.right };
@@ -19,6 +20,7 @@ public class Tile : MonoBehaviour
     private void Awake()
     {
         render = GetComponent<SpriteRenderer>();
+        myColider = GetComponent<Collider2D>();
     }
 
     private void OnMouseDown()
@@ -31,11 +33,12 @@ public class Tile : MonoBehaviour
         else
         {
             if (previousTile == null) // 첫 클릭
-                Selecte();
+                Select();
             else
             {
+                Debug.Log(previousTile.gameObject);
                 // 4방향 인접 오브젝트 중 지금 클릭중인 오브젝트가 있을 경우 실행.
-                if(GetAllAdjcentTiles().Contains(previousTile.gameObject))
+                if (GetAllAdjcentTiles().Contains(previousTile.gameObject))
                 {
                     Debug.Log("hi");
                     SwapSprite(previousTile.render);
@@ -44,14 +47,14 @@ public class Tile : MonoBehaviour
                 else // 아닐 경우
                 {
                     previousTile.GetComponent<Tile>().Deselect(); // 전 클릭 취소
-                    Selecte(); // 현재 클릭 활성화.
+                    Select(); // 현재 클릭 활성화.
                 }
-                
+
             }
         }
     }
 
-    private void Selecte()
+    private void Select()
     {
         isSelect = true;
         render.color = selectColor;
@@ -78,16 +81,21 @@ public class Tile : MonoBehaviour
     {
         RaycastHit2D hit = Physics2D.Raycast(transform.position, _dir);
         if (hit.collider != null)
+        {
             return hit.collider.gameObject; // 탐색 오브젝트가 있을 경우 해당 gameobject return
+        }
+
 
         return null; // 아무것도 탐색 못할 시에는 null return
     }
     private List<GameObject> GetAllAdjcentTiles()
     {
         List<GameObject> adjcentTiles = new List<GameObject>();
+        myColider.enabled = false;
         for (int i = 0; i < adjacentDir.Length; i++)
             adjcentTiles.Add(GetAdjcent(adjacentDir[i])); // U,D,L,R 4방향 인접 오브젝트 체크
 
+        myColider.enabled = true;
         return adjcentTiles;
     }
 }
