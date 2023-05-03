@@ -360,7 +360,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 916643838}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.2, y: -2.2, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -379,7 +379,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e83a1d46c0a30043aa6c1e6b3a6a5c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cube: {fileID: 526306092599925362, guid: 6abc2a25702afec4789203fb4e7c809b, type: 3}
+  Cubes: {fileID: 616149207}
+  Cube: {fileID: 526306092599925362, guid: 6abc2a25702afec4789203fb4e7c809b, type: 3}
   characters:
   - {fileID: -355967709, guid: 685cece1c543efd498e9ba833a7ba7cb, type: 3}
   - {fileID: -1041136856, guid: 685cece1c543efd498e9ba833a7ba7cb, type: 3}
