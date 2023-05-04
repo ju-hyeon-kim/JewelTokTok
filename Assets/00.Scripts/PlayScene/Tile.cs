@@ -25,7 +25,7 @@ public class Tile : MonoBehaviour
 
     private void OnMouseDown()
     {
-        if (render.sprite == null || PlayManager.inst.IsShifting)
+        if (render.sprite == null || PlayManager.inst.IsSliding)
             return;
 
         if (isSelect)
@@ -42,7 +42,9 @@ public class Tile : MonoBehaviour
                 {
                     Debug.Log("hi");
                     SwapSprite(previousTile.render);
+                    previousTile.ClearAllMatches(); // 내가 클릭했던 tile match확인
                     previousTile.Deselect();
+                    ClearAllMatches(); // 수동적으로 내가 클릭했던 tile과 교환된 현재 tile match 확인.
                 }
                 else // 아닐 경우
                 {
@@ -97,5 +99,59 @@ public class Tile : MonoBehaviour
 
         myColider.enabled = true;
         return adjcentTiles;
+    }
+
+    private List<GameObject> FindMatch(Vector2 _dir) // 같은 Sprite 찾는 메소드
+    {
+        List<GameObject> matchingTiles = new List<GameObject>();
+        myColider.enabled = false;
+        Collider2D co_Temp = null; // 직전 hit.colider를 담을 임시변수
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, _dir);
+
+        // 같은 sprite 아니거나 빈 공간일때까지 
+        while(hit.collider != null && hit.collider.GetComponent<SpriteRenderer>().sprite == render.sprite)
+        {
+            if (co_Temp != null)
+                co_Temp.enabled = true;
+
+            matchingTiles.Add(hit.collider.gameObject);
+            co_Temp = hit.collider;
+            co_Temp.enabled = false;
+            hit = Physics2D.Raycast(hit.transform.position, _dir);
+        }
+        myColider.enabled = true;
+        if(co_Temp != null)
+            co_Temp.enabled = true;
+
+        return matchingTiles;
+    }
+    private void ClearMatch(Vector2[] _straigtDir)
+    {
+        List<GameObject> matchingTiles = new List<GameObject>();
+        for (int i = 0; i < _straigtDir.Length; i++)
+            matchingTiles.AddRange(FindMatch(_straigtDir[i]));
+        if(matchingTiles.Count >= 2) // 자기자신 제외하고 2개 더
+        {
+            for (int i = 0; i < matchingTiles.Count; i++)
+                matchingTiles[i].GetComponent<SpriteRenderer>().sprite = null; // 그림 지워주기.
+
+            matchFound = true;
+        }    
+    }
+    public void ClearAllMatches()
+    {
+        if (render.sprite == null)
+            return;
+
+        //수직 and 수평 3match 순차대로 찾기.
+        ClearMatch(new Vector2[2] { Vector2.left, Vector2.right });
+        ClearMatch(new Vector2[2] { Vector2.up, Vector2.down });
+        if(matchFound)
+        {
+            render.sprite = null;
+            matchFound = false;
+            StopCoroutine(PlayManager.inst.FindEmptyTiles());
+            StartCoroutine(PlayManager.inst.FindEmptyTiles());
+        }
     }
 }
