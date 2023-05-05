@@ -40,7 +40,6 @@ public class Tile : MonoBehaviour
                 // 4방향 인접 오브젝트 중 지금 클릭중인 오브젝트가 있을 경우 실행.
                 if (GetAllAdjcentTiles().Contains(previousTile.gameObject))
                 {
-                    Debug.Log("hi");
                     SwapSprite(previousTile.render);
                     previousTile.ClearAllMatches(); // 내가 클릭했던 tile match확인
                     previousTile.Deselect();

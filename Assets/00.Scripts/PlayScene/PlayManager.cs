@@ -94,10 +94,9 @@ public class PlayManager : MonoBehaviour
             {
                 renders[j].sprite = renders[j + 1].sprite;
                 renders[j + 1].sprite = GetNewSprite();
-
-                if (j == renders.Count - 1)
-                    renders[j + 1].sprite = GetNewSprite();
             }
+            if (renders.Count == 1) // 맨 윗줄에서 타일 match 되었을 경우 예외처리.
+                renders[0].sprite = GetNewSprite();
         }
         IsSliding = false;
     }
