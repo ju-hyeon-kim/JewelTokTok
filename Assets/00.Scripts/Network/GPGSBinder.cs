@@ -100,6 +100,7 @@ public class GPGSBinder
             });
     }
 
+
     public void ShowAchievementUI() =>
         Social.ShowAchievementsUI();
 
@@ -108,6 +109,7 @@ public class GPGSBinder
 
     public void IncrementAchievement(string gpgsId, int steps, Action<bool> onUnlocked = null) =>
         PlayGamesPlatform.Instance.IncrementAchievement(gpgsId, steps, success => onUnlocked?.Invoke(success));
+
 
     public void ShowAllLeaderboardUI() =>
         Social.ShowLeaderboardUI();
@@ -129,6 +131,7 @@ public class GPGSBinder
             onloaded?.Invoke(data.Status == ResponseStatus.Success, data);
         });
     }
+
 
     public void IncrementEvent(string gpgsId, uint steps)
     {
