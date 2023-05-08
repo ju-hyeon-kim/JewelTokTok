@@ -90,6 +90,8 @@ public class PlayManager : MonoBehaviour
         for(int i = 0; i < emptyCount; i++)
         {
             yield return new WaitForSeconds(slideDelay);
+            GUIManager.inst.Score += 50; // 스코어 증가. emptyCount 갯수에 비례해서
+
             for(int j = 0; j < renders.Count - 1; j++)
             {
                 renders[j].sprite = renders[j + 1].sprite;
