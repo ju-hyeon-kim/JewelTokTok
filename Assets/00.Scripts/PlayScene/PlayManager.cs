@@ -16,6 +16,9 @@ public class PlayManager : MonoBehaviour
     [SerializeField] int increaseScore = 50;
     [SerializeField] float increaseTimer = 0.2f;
 
+    [HideInInspector]
+    public int emptyTileCount = 0;
+
     public static PlayManager inst = null;
 
     public bool IsSliding { get; set; }
@@ -23,7 +26,6 @@ public class PlayManager : MonoBehaviour
     void Start()
     {
         inst = GetComponent<PlayManager>();
-
         MakeBoard();
     }
 
@@ -66,14 +68,16 @@ public class PlayManager : MonoBehaviour
             for(int h = 0; h < height; h++)
                 if (tiles[w, h].GetComponent<SpriteRenderer>().sprite == null)
                 {
-                    yield return StartCoroutine(SlideDownTiles(w, h));
+                    yield return StartCoroutine(SlideDownTiles(w, h));                 
                     break;
                 }
-        yield return new WaitForSeconds(0.3f);
+        
+        yield return new WaitForSeconds(0.5f);
         for (int w = 0; w < width; w++) // 타일들 내려오고나서 다시 match되는것 있나 확인.
             for (int h = 0; h < height; h++)
                 tiles[w, h].GetComponent<Tile>().ClearAllMatches();
-        
+        if(emptyTileCount >= 3)
+            CalcScoreAndTimer();
     }
     private IEnumerator SlideDownTiles(int _w, int _hStart, float slideDelay = 0.05f)
     {
@@ -88,12 +92,11 @@ public class PlayManager : MonoBehaviour
                 emptyCount++;
             renders.Add(render);
         }
-
-        for(int i = 0; i < emptyCount; i++)
+        EmptyTileCounting();
+        for (int i = 0; i < emptyCount; i++)
         {
             yield return new WaitForSeconds(slideDelay);
-            GUIManager.inst.Score += increaseScore; // 스코어 증가. emptyCount 갯수에 비례해서
-            GUIManager.inst.Timer += increaseTimer; // 타임 증가. 
+            
 
             for(int j = 0; j < renders.Count - 1; j++)
             {
@@ -103,20 +106,32 @@ public class PlayManager : MonoBehaviour
             if (renders.Count == 1) // 맨 윗줄에서 타일 match 되었을 경우 예외처리.
                 renders[0].sprite = GetNewSprite();
         }
+
         IsSliding = false;
     }
-    //private Sprite GetNewSprite(int _w, int _h)
-    //{
-    //    List<Sprite> newSprites = new List<Sprite>();
-    //    newSprites.AddRange(characters);
 
-    //    if(_w > 0)
-    //}
     private Sprite GetNewSprite()
     {
         List<Sprite> newSprites = new List<Sprite>();
         newSprites.AddRange(characters);
 
         return newSprites[Random.Range(0, newSprites.Count)];
+    }
+    public void EmptyTileCounting()
+    {
+        emptyTileCount = 0;
+        for (int w = 0; w < width; w++)
+            for (int h = 0; h < height; h++)
+                if (tiles[w, h].GetComponent<SpriteRenderer>().sprite == null)
+                {
+                    emptyTileCount++;
+                }
+    }
+    public void CalcScoreAndTimer()
+    {
+        float totalIncreaseTimer = increaseTimer * emptyTileCount;
+        GUIManager.inst.Timer += totalIncreaseTimer; // 타임 증가.
+        GUIManager.inst.AddTimer(totalIncreaseTimer);
+        GUIManager.inst.Score += increaseScore * emptyTileCount; // 스코어 증가. emptyCount 갯수에 비례해서
     }
 }

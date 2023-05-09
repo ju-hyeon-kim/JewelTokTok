@@ -11,6 +11,7 @@ public class Tile : MonoBehaviour
     SpriteRenderer render;
     Collider2D myColider;
     bool isSelect = false;
+    bool isCheck = false;
 
     private Vector2[] adjacentDir = new Vector2[] { Vector2.up, Vector2.down, Vector2.left, Vector2.right };
 
@@ -44,6 +45,8 @@ public class Tile : MonoBehaviour
                     previousTile.ClearAllMatches(); // 내가 클릭했던 tile match확인
                     previousTile.Deselect();
                     ClearAllMatches(); // 수동적으로 내가 클릭했던 tile과 교환된 현재 tile match 확인.
+                    if(PlayManager.inst.emptyTileCount >= 3)
+                        PlayManager.inst.CalcScoreAndTimer();
                 }
                 else // 아닐 경우
                 {
@@ -85,7 +88,6 @@ public class Tile : MonoBehaviour
         {
             return hit.collider.gameObject; // 탐색 오브젝트가 있을 경우 해당 gameobject return
         }
-
 
         return null; // 아무것도 탐색 못할 시에는 null return
     }
@@ -140,15 +142,17 @@ public class Tile : MonoBehaviour
     public void ClearAllMatches()
     {
         if (render.sprite == null)
-            return;
+            return;    
 
         //수직 and 수평 3match 순차대로 찾기.
         ClearMatch(new Vector2[2] { Vector2.left, Vector2.right });
         ClearMatch(new Vector2[2] { Vector2.up, Vector2.down });
-        if(matchFound)
+
+        if (matchFound)
         {
             render.sprite = null;
             matchFound = false;
+
             StopCoroutine(PlayManager.inst.FindEmptyTiles());
             StartCoroutine(PlayManager.inst.FindEmptyTiles());
         }
