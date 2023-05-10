@@ -72,12 +72,13 @@ public class PlayManager : MonoBehaviour
                     break;
                 }
         
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.4f);
         for (int w = 0; w < width; w++) // 타일들 내려오고나서 다시 match되는것 있나 확인.
             for (int h = 0; h < height; h++)
                 tiles[w, h].GetComponent<Tile>().ClearAllMatches();
         if(emptyTileCount >= 3)
             CalcScoreAndTimer();
+        emptyTileCount = 0;
     }
     private IEnumerator SlideDownTiles(int _w, int _hStart, float slideDelay = 0.05f)
     {
@@ -123,9 +124,7 @@ public class PlayManager : MonoBehaviour
         for (int w = 0; w < width; w++)
             for (int h = 0; h < height; h++)
                 if (tiles[w, h].GetComponent<SpriteRenderer>().sprite == null)
-                {
                     emptyTileCount++;
-                }
     }
     public void CalcScoreAndTimer()
     {
@@ -133,5 +132,17 @@ public class PlayManager : MonoBehaviour
         GUIManager.inst.Timer += totalIncreaseTimer; // 타임 증가.
         GUIManager.inst.AddTimer(totalIncreaseTimer);
         GUIManager.inst.Score += increaseScore * emptyTileCount; // 스코어 증가. emptyCount 갯수에 비례해서
+    }
+    public void RainbowBombItem(int _tileNum)
+    {
+        for (int w = 0; w < width; w++)
+            for (int h = 0; h < height; h++)
+                if (tiles[w, h].GetComponent<SpriteRenderer>().sprite == characters[_tileNum])
+                    tiles[w, h].GetComponent<SpriteRenderer>().sprite = null;
+
+        EmptyTileCounting();
+
+        StopCoroutine(FindEmptyTiles());
+        StartCoroutine(FindEmptyTiles());
     }
 }

@@ -11,7 +11,6 @@ public class Tile : MonoBehaviour
     SpriteRenderer render;
     Collider2D myColider;
     bool isSelect = false;
-    bool isCheck = false;
 
     private Vector2[] adjacentDir = new Vector2[] { Vector2.up, Vector2.down, Vector2.left, Vector2.right };
 
@@ -47,6 +46,7 @@ public class Tile : MonoBehaviour
                     ClearAllMatches(); // 수동적으로 내가 클릭했던 tile과 교환된 현재 tile match 확인.
                     if(PlayManager.inst.emptyTileCount >= 3)
                         PlayManager.inst.CalcScoreAndTimer();
+                    PlayManager.inst.emptyTileCount = 0;
                 }
                 else // 아닐 경우
                 {

@@ -13,11 +13,14 @@ public class GUIManager : MonoBehaviour
 
     private int score;
 
-    public float maxTimer;
-    private float curTimer;
-    private float addTimer;
+    public float maxTimer; // 최대 시간
+    private float curTimer; // 현재 시간
+    private float addTimer; // 추가 되는 시간
     private string AddTime = "AddTime";
-    private bool isEnoughTime = true;
+    private bool isEnoughTime = true; // 현재 시간이 0초가 아닌지 확인하는 bool값
+    public bool isStopWatch = false; // '스톱워치' 아이템이 사용되었는지 확인하는 bool값
+    public float maxStopWatchTimer;
+    private float curStopWatchTimer;
 
     private void Awake()
     {
@@ -25,12 +28,15 @@ public class GUIManager : MonoBehaviour
         myAnim = GetComponent<Animator>();
         score = 0; Txt_Score.text = score.ToString();
         curTimer = maxTimer;
+        curStopWatchTimer = maxStopWatchTimer;
         isEnoughTime = true;
     }
     private void Update()
     {
-        if(isEnoughTime)
+        if(isEnoughTime && !isStopWatch)
             TimeAttack();
+        if(isStopWatch)
+            StopWatchItem();
     }
 
     public int Score
@@ -45,9 +51,11 @@ public class GUIManager : MonoBehaviour
     public float Timer
     {
         get { return curTimer; }
-        set
-        {
-            curTimer = value;
+        set 
+        { 
+            curTimer = value; 
+            if(curTimer >= maxTimer)
+                curTimer = maxTimer;
         }
     }
 
@@ -55,6 +63,11 @@ public class GUIManager : MonoBehaviour
     {
         curTimer -= Time.deltaTime;
         Txt_Timer.text = curTimer.ToString("F2");
+
+        if (curTimer <= 10.0f)
+            Txt_Timer.color = Color.red;
+        else
+            Txt_Timer.color = Color.white;
 
         if(curTimer <= 0.0f)
         {
@@ -66,6 +79,18 @@ public class GUIManager : MonoBehaviour
     {
         addTimer = _sec;
         Txt_AddTimer.text = "+" + addTimer.ToString() + " sec";
+        myAnim.ResetTrigger(AddTime);
         myAnim.SetTrigger(AddTime);
+    }
+    private void StopWatchItem()
+    {
+        curStopWatchTimer -= Time.deltaTime;
+        Txt_Timer.text = curTimer.ToString("F2");
+        if (curStopWatchTimer <= 0.0f)
+        {
+            isStopWatch = false;
+            curStopWatchTimer = maxStopWatchTimer;
+        }
+            
     }
 }
