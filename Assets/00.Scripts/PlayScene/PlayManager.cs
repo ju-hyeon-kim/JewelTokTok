@@ -97,11 +97,12 @@ public class PlayManager : MonoBehaviour
         for (int i = 0; i < emptyCount; i++)
         {
             yield return new WaitForSeconds(slideDelay);
-            
 
             for(int j = 0; j < renders.Count - 1; j++)
             {
                 renders[j].sprite = renders[j + 1].sprite;
+                if (renders[j].sprite == null)
+                    renders[j].sprite = GetNewSprite();
                 renders[j + 1].sprite = GetNewSprite();
             }
             if (renders.Count == 1) // 맨 윗줄에서 타일 match 되었을 경우 예외처리.
@@ -141,6 +142,8 @@ public class PlayManager : MonoBehaviour
                     tiles[w, h].GetComponent<SpriteRenderer>().sprite = null;
 
         EmptyTileCounting();
+        CalcScoreAndTimer();
+        emptyTileCount = 0;
 
         StopCoroutine(FindEmptyTiles());
         StartCoroutine(FindEmptyTiles());

@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+// (박영준) 플레이시 아이템버튼 UI 스크립트
 public class PlayableItem : MonoBehaviour
 {
     private Color selectColor = new Color(0.5f, 0.5f, 0.5f, 1.0f);

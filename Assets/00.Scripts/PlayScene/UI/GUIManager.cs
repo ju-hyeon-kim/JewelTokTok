@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+// (박영준) 게임플레이시 타이머 UI 관련 스크립트
 public class GUIManager : MonoBehaviour
 {
     public static GUIManager inst;
