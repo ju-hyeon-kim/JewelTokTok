@@ -26,6 +26,7 @@ public class GPGSBinder
     void Init()
     {
         var config = new PlayGamesClientConfiguration.Builder().EnableSavedGames().Build();
+        //EnableSavedGames() = 클라우드 저장 기능
         PlayGamesPlatform.InitializeInstance(config);
         PlayGamesPlatform.DebugLogEnabled = true;
         PlayGamesPlatform.Activate();
