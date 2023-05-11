@@ -19,9 +19,13 @@ public class MainManager : MonoBehaviour
 
     void GoogleLogin()
     {
-        //GPGSBinder.Inst.Login((success, localUser) => LoginSuccess());
-        GPGSBinder.Inst.Login();
+        GPGSBinder.Inst.Login((success, localUser) => LoginSuccessTest());
         //string s = $"{success}, {localUser.userName}, {localUser.id}, {localUser.state}, {localUser.underage}");
+    }
+
+    void LoginSuccessTest()
+    {
+        Debug.Log("로그인 성공");
     }
 
     void LoginSuccess()
