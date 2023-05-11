@@ -26,9 +26,7 @@ public class MainManager : MonoBehaviour
     void LoginSuccess()
     {
         TitleScreen.LoginSuccess();
-
         GPGSBinder.Inst.LoadCloud("Nickname", (success, data) => UserBar.LoginSuccess(data));
-        
     }
 
     public void StartButton() // OnClick
