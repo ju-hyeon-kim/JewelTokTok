@@ -12,8 +12,9 @@ public class MainManager : MonoBehaviour
     public TitleScreen TitleScreen;
     public UserBar UserBar;
 
-    void Awake()
+    void Start()
     {
+        Debug.Log("MainManager.cs¿« Start");
         GoogleLogin();
     }
 

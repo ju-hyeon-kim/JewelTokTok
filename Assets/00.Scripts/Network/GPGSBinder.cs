@@ -35,6 +35,7 @@ public class GPGSBinder
 
     public void Login(Action<bool, UnityEngine.SocialPlatforms.ILocalUser> onLoginSuccess = null)
     {
+        Debug.Log("GPGS의 로그인 함수가 호출 되었음");
         Init();
         PlayGamesPlatform.Instance.Authenticate(SignInInteractivity.CanPromptAlways, (success) =>
         {
