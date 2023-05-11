@@ -67,6 +67,8 @@ public class GPGSBinder
 
     public void LoadCloud(string fileName, Action<bool, string> onCloudLoaded = null)
     {
+        Debug.Log(fileName);
+        Debug.Log(onCloudLoaded);
         SavedGame.OpenWithAutomaticConflictResolution(fileName, DataSource.ReadCacheOrNetwork,
             ConflictResolutionStrategy.UseLastKnownGood, (status, game) =>
             {
