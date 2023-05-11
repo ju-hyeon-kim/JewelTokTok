@@ -10,21 +10,40 @@ public class PlayableItem : MonoBehaviour
     [SerializeField] UnityEngine.UI.Image img_RainbowBomb;
     [SerializeField] UnityEngine.UI.Image img_StopWatch;
 
+    bool isOpenSelectWindow = false;
     bool isUsedRainbowBomb = false; // 'RainbowBomb' 아이템을 사용했는지 여부 bool값
     bool isUsedStopWatch = false; // 'StopWatch' 아이템을 사용했는지 여부 bool값
  
     public void Btn_RainbowBomb()
     {
-        go_RanibowSelect.SetActive(true);
+        if(!isOpenSelectWindow)
+        {
+            go_RanibowSelect.SetActive(true);
+            isOpenSelectWindow = true;
+        }
+        else
+        {
+            go_RanibowSelect.SetActive(false);
+            isOpenSelectWindow = false;
+        }
     }
     public void Btn_SelectRainbow(int _tileNum)
     {
-        PlayManager.inst.RainbowBombItem(_tileNum);
-        img_RainbowBomb.color = selectColor;
+        if(!isUsedRainbowBomb)
+        {
+            PlayManager.inst.RainbowBombItem(_tileNum);
+            img_RainbowBomb.color = selectColor;
+            go_RanibowSelect.SetActive(false);
+            isUsedRainbowBomb = true;
+        }
     }
     public void Btn_StopWatch()
     {
-        GUIManager.inst.isStopWatch = true;
-        img_StopWatch.color = selectColor;
+        if(!isUsedStopWatch)
+        {
+            GUIManager.inst.isStopWatch = true;
+            img_StopWatch.color = selectColor;
+            isUsedStopWatch = true;
+        }
     }
 }
