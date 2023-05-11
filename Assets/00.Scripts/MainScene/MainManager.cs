@@ -20,21 +20,13 @@ public class MainManager : MonoBehaviour
 
     void GoogleLogin()
     {
-        GPGSBinder.Inst.Login((success, localUser) => LoginSuccessTest());
+        GPGSBinder.Inst.Login((success, localUser) => LoginSuccess());
         //string s = $"{success}, {localUser.userName}, {localUser.id}, {localUser.state}, {localUser.underage}");
-    }
-
-    void LoginSuccessTest()
-    {
-        Debug.Log("로그인 성공");
     }
 
     void LoginSuccess()
     {
         TitleScreen.LoginSuccess();
-
-        //유저바에 닉네임 넘겨주기
-        //GPGSBinder.Inst.LoadCloud("Nickname", (success, data) => UserBar.LoginSuccess(data));
     }
 
     public void StartButton() // OnClick

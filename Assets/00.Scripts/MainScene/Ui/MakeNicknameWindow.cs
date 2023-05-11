@@ -12,9 +12,10 @@ public class MakeNicknameWindow : MonoBehaviour
 {
     public TMP_InputField InputField;
     public NoticeWindow NoticeWindow;
-
     public GameObject TitleScreen;
+    public UserBar UserBar;
 
+    string nickname = "";
     string reason = "";
 
     public void SellectButton() //onclick
@@ -58,13 +59,15 @@ public class MakeNicknameWindow : MonoBehaviour
 
     void SaveNickname()
     {
+        nickname = InputField.text;
         //클라우드 저장
-        GPGSBinder.Inst.SaveCloud("Nickname", InputField.text, success => SuccessSaveNickname());
+        GPGSBinder.Inst.SaveCloud("Nickname", nickname, success => SuccessSaveNickname());
     }
 
     void SuccessSaveNickname()
     {
         NoticeWindow.WindowSetting("닉네임 저장이 완료되었습니다.", true, OffScreens);
+        UserBar.UserDataUpdate(nickname);
     }
 
     void OffScreens()

@@ -48,6 +48,22 @@ public class GPGSBinder
         PlayGamesPlatform.Instance.SignOut();
     }
 
+    public void SearchCloud(string fileName, Action istrue = null, Action isfalse = null)
+    {
+        SavedGame.OpenWithAutomaticConflictResolution("nickname", DataSource.ReadCacheOrNetwork, ConflictResolutionStrategy.UseLongestPlaytime, (status, game) =>
+        {
+            if (status == SavedGameRequestStatus.Success)
+            {
+                // 파일이 이미 있음
+                istrue?.Invoke();
+            }
+            else
+            {
+                // 파일이 없음
+                isfalse?.Invoke();
+            }
+        });
+    }
 
     public void SaveCloud(string fileName, string saveData, Action<bool> onCloudSaved = null)
     {
@@ -68,8 +84,6 @@ public class GPGSBinder
 
     public void LoadCloud(string fileName, Action<bool, string> onCloudLoaded = null)
     {
-        Debug.Log(fileName);
-        Debug.Log(onCloudLoaded);
         SavedGame.OpenWithAutomaticConflictResolution(fileName, DataSource.ReadCacheOrNetwork,
             ConflictResolutionStrategy.UseLastKnownGood, (status, game) =>
             {

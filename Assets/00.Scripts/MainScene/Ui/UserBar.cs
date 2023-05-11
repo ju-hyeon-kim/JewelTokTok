@@ -7,7 +7,7 @@ public class UserBar : MonoBehaviour
 {
     public TMP_Text Name;
 
-    public void LoginSuccess(string name)
+    public void UserDataUpdate(string name)
     {
         Name.text = name;
     }
